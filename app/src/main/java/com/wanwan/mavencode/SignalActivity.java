@@ -1,28 +1,30 @@
 package com.wanwan.mavencode;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.zhl.cbdialog.CBDialogBuilder;
+import com.zhl.cbdialog.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.leefeng.promptlibrary.PromptButton;
-import me.leefeng.promptlibrary.PromptButtonListener;
-import me.leefeng.promptlibrary.PromptDialog;
 
 public class SignalActivity extends AppCompatActivity  {
 
-
-
-    private PromptDialog promptDialog;
     private Context mContext;
+    private int curSelectedItemPos=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +37,21 @@ public class SignalActivity extends AppCompatActivity  {
 
 
     private void initView() {
-        //创建对象
-        promptDialog = new PromptDialog(this);
-        //设置自定义属性
-        promptDialog.getDefaultBuilder().touchAble(true).round(3).loadingDuration(3000);
 
 
         findViewById(R.id.main_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                promptDialog.showWarn("注意");
+                new CBDialogBuilder(mContext)
+                        .setTouchOutSideCancelable(true)
+                        .showCancelButton(true)
+                        .showIcon(false)
+                        .setTitle("提示")
+                        .setMessage("你是否需要退出")
+                        .setConfirmButtonText("确定")
+                        .setCancelButtonText("取消")
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .create().show();
             }
         });
 
@@ -52,72 +59,169 @@ public class SignalActivity extends AppCompatActivity  {
             @Override
             public void onClick(View view) {
 //                main_failview.setMode(FailView.MODE_REFRESH);
-                promptDialog.showLoading("正在登录");
+                new CBDialogBuilder(mContext)
+                        .setTouchOutSideCancelable(true)
+                        .showCancelButton(true)
+                        .setTitle("设置按钮和信息文字样式")
+                        .setMessage("this is a normal CBDialog")
+                        .setMessageTextSize(16)
+                        .setMessageTextColor(Color.BLUE)
+                        .setConfirmButtonText("确定")
+//                        .setConfirmBackgroundResouce(R.drawable.custom_button_background_right)
+                        .setConfirmButtonTextColor(Color.WHITE)
+                        .setCancelButtonText("Quit")
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .create().show();
             }
         });
         findViewById(R.id.main_success).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                promptDialog.showSuccess("登陆成功");
+                new CBDialogBuilder(mContext)
+                        .setTouchOutSideCancelable(true)
+                        .showCancelButton(false)
+                        .setTitle("单个按钮")
+                        .setMessage("this is a normal CBDialog")
+                        .setConfirmButtonText("确定")
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .create().show();
             }
         });
         findViewById(R.id.main_fail).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                promptDialog.showError("登录失败");
+                new CBDialogBuilder(mContext)
+                        .setTouchOutSideCancelable(true)
+                        .showCancelButton(true)
+                        .setTitle("这是一个有按钮监听的对话框")
+                        .setMessage("this is a normal CBDialog with listener")
+                        .setConfirmButtonText("ok")
+                        .setCancelButtonText("cancel")
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .setDialoglocation(CBDialogBuilder.DIALOG_LOCATION_BOTTOM)
+                        .setButtonClickListener(true, new CBDialogBuilder.onDialogbtnClickListener() {
+                            @Override
+                            public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
+                                switch (whichBtn) {
+                                    case BUTTON_CONFIRM:
+                                        Toast.makeText(context, "点击了确认按钮", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case BUTTON_CANCEL:
+                                        Toast.makeText(context, "点击了取消按钮", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        })
+                        .create().show();
             }
         });
 
-        //按钮的定义，创建一个按钮的对象
-        final PromptButton confirm = new PromptButton("确定", new PromptButtonListener() {
-            @Override
-            public void onClick(PromptButton button) {
-                Toast.makeText(mContext, button.getText(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        confirm.setTextColor(Color.parseColor("#DAA520"));
-        confirm.setFocusBacColor(Color.parseColor("#FAFAD2"));
-        confirm.setDelyClick(true);//点击后，是否再对话框消失后响应按钮的监听事件
         findViewById(R.id.main_warn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                promptDialog.showWarnAlert("你确定要退出登录？", new PromptButton("取消", new PromptButtonListener() {
-                    @Override
-                    public void onClick(PromptButton button) {
-                        Toast.makeText(mContext, button.getText(), Toast.LENGTH_SHORT).show();
-                    }
-                }), confirm);
+                final String[] itemOptions = new String[]{"较小", "中等", "较大", "巨无霸"};
+                new CBDialogBuilder(mContext)
+                        .setTouchOutSideCancelable(false)
+                        .showConfirmButton(false)
+                        .setTitle("选择文字大小")
+                        .setConfirmButtonText("ok")
+                        .setCancelButtonText("cancel")
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .setItems(itemOptions, new CBDialogBuilder.onDialogItemClickListener() {
+
+                            @Override
+                            public void onDialogItemClick(CBDialogBuilder.DialogItemAdapter ItemAdapter,
+                                                          Context context, CBDialogBuilder dialogbuilder, Dialog dialog,
+                                                          int position) {
+                                curSelectedItemPos = position;
+                                //TODO 保存选中设置
+                                dialog.dismiss();
+                            }
+                        }, new CBDialogBuilder.OnConvertItemViewListener() {
+                            class ViewHolder {
+                                TextView txView;
+                            }
+
+                            @Override
+                            public View convertItemView(int position, View convertView, ViewGroup parent) {
+                                ViewHolder viewHolder = null;
+                                if (convertView == null) {
+                                    viewHolder = new ViewHolder();
+                                    convertView = LayoutInflater.from(mContext).inflate(
+                                            R.layout.custon_item_option_text, parent, false);
+                                    viewHolder.txView = (TextView) convertView
+                                            .findViewById(R.id.item_tx);
+                                    convertView.setTag(viewHolder);
+                                } else {
+                                    viewHolder = (ViewHolder) convertView.getTag();
+                                }
+                                viewHolder.txView.setTextColor(getResources().getColor(R.color.item_text_color));
+                                if (position == curSelectedItemPos) {
+                                    viewHolder.txView.setBackgroundResource(R.drawable.custom_option_item_tx_background);
+                                } else {
+                                    viewHolder.txView.setBackgroundResource(R.color.color_transparent);
+                                }
+                                viewHolder.txView.setText(itemOptions[position]);
+                                return convertView;
+                            }
+                        }, curSelectedItemPos)
+                        .create().show();
             }
         });
 
         findViewById(R.id.main_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                promptDialog.showInfo("成功了");
+                new CBDialogBuilder(mContext, CBDialogBuilder.DIALOG_STYLE_PROGRESS, 0.5f)
+                        .showCancelButton(true)
+                        .setMessage("正在加载请稍后...")
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .setOnProgressOutTimeListener(1, new CBDialogBuilder.onProgressOutTimeListener() {
+                            @Override
+                            public void onProgressOutTime(Dialog dialog, TextView dialogMsgTextView) {
+//                                dialogMsgTextView.setText("出错啦");
+                            }
+                        })
+                        .setProgressTimeOutLimit(false)
+//                        .setProgressStyleColorRes(new int[]{0xFF37474F,0xFF263238,0xFF21272B,0xFF80CBC4,0xFF009688,0xFFDE6262,0xFF0F519F})
+                        .create().show();
             }
         });
 
         findViewById(R.id.main_system).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //可创建android效果的底部Sheet选择，默认IOS效果，sheetCellPad=0为Android效果的Sheet
-//                promptDialog.getAlertDefaultBuilder().sheetCellPad(0).round(0);
-                //设置按钮的特点，颜色大小什么的，具体看PromptButton的成员变量
-                PromptButton cancle = new PromptButton("取消", null);
-                cancle.setTextColor(Color.parseColor("#0076ff"));
-                //设置显示的文字大小及颜色
-//                promptDialog.getAlertDefaultBuilder().textSize(12).textColor(Color.GRAY);
-                //默认两个按钮为Alert对话框，大于三个按钮的为底部SHeet形式展现
-                promptDialog.showAlertSheet("", true, cancle,
-                        new PromptButton("选项1", null), new PromptButton("选项2", null),
-                        new PromptButton("选项3", null), new PromptButton("选项4", null));
+                new CBDialogBuilder(mContext, CBDialogBuilder.DIALOG_STYLE_PROGRESS_AVLOADING)
+                        .setTouchOutSideCancelable(false)
+                        .showCancelButton(true)
+                        .setMessage("正在加载请稍后...")
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .setAVLoadingColor(Color.RED)
+                        .setOnProgressOutTimeListener(1, new CBDialogBuilder.onProgressOutTimeListener() {
+                            @Override
+                            public void onProgressOutTime(Dialog dialog, TextView dialogMsgTextView) {
+
+                            }
+                        })
+                        .create().show();
 
             }
         });
         findViewById(R.id.main_customer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                promptDialog.showCustom(R.mipmap.ic_launcher, "自定义图标的");
+                new CBDialogBuilder(mContext, CBDialogBuilder.DIALOG_STYLE_NORMAL)
+                        .showIcon(false)
+                        .setTouchOutSideCancelable(false)
+                        .showCancelButton(false)
+                        .setDialoglocation(CBDialogBuilder.DIALOG_LOCATION_CENTER)
+                        .setTitle("请输入姓名")
+                        .setView(R.layout.cb_custom_edit_view)
+                        .setConfirmButtonText("确定")
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .create().show();
             }
         });
 //        u0_a280   8011  2923  1474704 209280 SyS_epoll_ 0000000000 S me.leefeng.beida
@@ -125,17 +229,16 @@ public class SignalActivity extends AppCompatActivity  {
         findViewById(R.id.main_ad).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                promptDialog.getDefaultBuilder().backAlpha(150);
-//                Glide.with(MainActivity.this).load("https://timgsa.baidu.com/timg?image&quality=80&" +
-//                        "size=b9999_10000&sec=1495518782659&di=25b120262114749ae8543652d2de5715&" +
-//                        "imgtype=0&src=http%3A%2F%2Fimg.tupianzj.com%2Fuploads%2Fallimg%2F160316%2F9-160316152R5.jpg")
-////                        .placeholder(getResources().getDrawable(R.drawable.ic_prompt_holder))
-//                        .into(promptDialog.showAd(true, new OnAdClickListener() {
-//                            @Override
-//                            public void onAdClick() {
-//                                Toast.makeText(MainActivity.this,"点击了广告",Toast.LENGTH_SHORT).show();
-//                            }
-//                        }));
+                new CBDialogBuilder(mContext, CBDialogBuilder.DIALOG_STYLE_NORMAL)
+                        .showIcon(false)
+                        .setTouchOutSideCancelable(false)
+                        .showCancelButton(false)
+                        .setDialoglocation(CBDialogBuilder.DIALOG_LOCATION_CENTER)
+                        .setTitle("请输入姓名")
+                        .setView(R.layout.cb_custom_progressbar_view)
+                        .setConfirmButtonText("确定")
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .create().show();
             }
         });
     }

@@ -1,14 +1,14 @@
-apply plugin: 'com.android.application'
-
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
 android {
     compileSdkVersion 22
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.wanwan.mavencode"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -16,11 +16,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
-//    compile 'com.lebaos.maven:dialoglibrary:1.0.5'
-    compile project(':dialoglibrary')
+}
+
+uploadArchives{
+    repositories.mavenDeployer {
+        def mavenRepositoryPath = file(getProperty('MAVEN_PATH'))
+        repository(url: "file://${mavenRepositoryPath.absolutePath}")
+        pom.project{
+            groupId "com.lebaos.maven"
+            artifactId "dialoglibrary"
+            version "1.0.5"
+        }
+    }
 }
