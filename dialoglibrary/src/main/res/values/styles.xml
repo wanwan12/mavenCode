@@ -13,7 +13,6 @@
     </style>
     <!-- 对话框创建时需要加载的样式 -->
     <style name="Dialog" parent="@android:style/Theme.Dialog">
-
         <!-- 去除标题 -->
         <item name="android:windowNoTitle">true</item>
         <!-- 去除背景 -->
@@ -23,7 +22,6 @@
     </style>
     <!-- 对话框创建时需要加载的样式(不显示阴影) -->
     <style name="DialogDim" parent="@android:style/Theme.Dialog">
-
         <!-- 去除标题 -->
         <item name="android:windowNoTitle">true</item>
         <!-- 去除背景 -->
@@ -32,27 +30,27 @@
     </style>
     <!--
     <style name="NotTitleDialog" parent="@android:style/Theme.Dialog">
-
         去除标题
         <item name="android:windowNoTitle">true</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-
-
-
-
-
-    -->
-
-
-    <!-- 对话框动画样式 -->
+    <!- 对话框动画样式普通 -->
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/modal_in</item>
         <item name="android:windowExitAnimation">@anim/modal_out</item>
     </style>
-
+    <!-- 对话框动画样式 -->
+    <style name="DialogAnimationFast">
+        <item name="android:windowEnterAnimation">@anim/modal_fast_in</item>
+        <item name="android:windowExitAnimation">@anim/modal_fast_out</item>
+    </style>
+    <!-- 对话框动画样式 -->
+    <style name="dialog_fast_animation">
+        <item name="android:windowEnterAnimation">@anim/modal_fast_in</item>
+        <item name="android:windowExitAnimation">@anim/modal_fast_out</item>
+    </style>
     <!-- 对话框动画样式样式2 -->
     <style name="DialogAnimationSlidTop">
         <item name="android:windowEnterAnimation">@anim/dialog_slid_open_top</item>

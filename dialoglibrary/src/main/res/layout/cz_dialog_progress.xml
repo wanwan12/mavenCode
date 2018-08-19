@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cb_dialog_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cb_dialog_background"
+    android:orientation="vertical">
+    <!-- 对话框标题 和图标 -->
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/dialog_title_style"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/title_default"
+        android:textSize="18sp" />
+
+    <!-- 对话框消息内容 -->
+    <LinearLayout
+        android:id="@+id/lin_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <com.zhl.cbdialog.view.CBHorizontalProgressBar
+            android:id="@+id/cbh_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="50"
+            app:cb_progress_reached_color="#3030ff"
+            app:cb_progress_text_color="#600000"
+            app:cb_progress_unreached_color="#999999" />
+    </LinearLayout>
+
+
+</LinearLayout>

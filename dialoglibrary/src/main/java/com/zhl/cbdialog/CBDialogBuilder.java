@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +28,7 @@ import com.zhl.cbdialog.pedant.SweetAlert.ProgressHelper;
 import com.zhl.cbdialog.pnikosis.materialishprogress.ProgressWheel;
 import com.zhl.cbdialog.titanic.Titanic;
 import com.zhl.cbdialog.titanic.TitanicTextView;
+import com.zhl.cbdialog.view.CBHorizontalProgressBar;
 
 
 /**
@@ -68,17 +70,21 @@ public class CBDialogBuilder {
      */
     public static final int DIALOG_STYLE_NORMAL = R.layout.cb_dialog;
     /**
+     * 普通对话框
+     */
+    public static final int DIALOG_STYLE_PRORESS = R.layout.cb_dialog;
+    /**
      * metrial进度条风格
      */
-    public static final int DIALOG_STYLE_PROGRESS = R.layout.cb_dialog_progress;
+    public static final int DIALOG_STYLE_LOADING = R.layout.cb_dialog_loading;
     /**
      * 一个文字水平上升的动画风格的进度框
      */
-    public static final int DIALOG_STYLE_PROGRESS_TITANIC = R.layout.cb_dialog_progress_titanic;
+    public static final int DIALOG_STYLE_LOADING_TITANIC = R.layout.cb_dialog_loading_titanic;
     /**
      * 一个自定义动画进度框
      */
-    public static final int DIALOG_STYLE_PROGRESS_AVLOADING = R.layout.cb_dialog_progress_avloading;
+    public static final int DIALOG_STYLE_LOADING_AVLOADING = R.layout.cb_dialog_loading_avloading;
     /**
      * 自定义dialog 布局样式
      */
@@ -87,6 +93,10 @@ public class CBDialogBuilder {
      * 缩放动画
      */
     public static final int DIALOG_ANIM_NORMAL = R.style.DialogAnimation;
+    /**
+     *
+     * */
+    public static final int DIALOG_ANIM_NORMAL_Fast = R.style.DialogAnimationFast;
     /**
      * 从下往上滑动动画
      */
@@ -132,6 +142,22 @@ public class CBDialogBuilder {
      */
     private int DIALOG_STYLE_CURRENT = DIALOG_STYLE_NORMAL;
     /**
+     * 列表item选中背景：粉色
+     */
+    public static final int ITEM_BG_PINK = R.drawable.cb_itembg_pink;
+    /**
+     * 列表item选中背景：绿色
+     */
+    public static final int ITEM_BG_GREEN = R.drawable.cb_itembg_green;
+    /**
+     * 列表item选中背景：蓝色
+     */
+    public static final int ITEM_BG_BLUE = R.drawable.cb_itembg_green;
+    /**
+     * 当前使用的列表item选中背景
+     */
+    private int ITEM_BG_CURRENT = ITEM_BG_BLUE;
+    /**
      * 上下文
      */
     private Context context;
@@ -167,6 +193,14 @@ public class CBDialogBuilder {
      * dialog 根布局
      */
     private View dialogRootLayout;
+    /**
+     * 进度条
+     */
+    private CBHorizontalProgressBar progressBar;
+    /**
+     * 输入框
+     */
+    private EditText editText;
     /**
      * 消息框布局
      */
@@ -347,17 +381,16 @@ public class CBDialogBuilder {
         window.setWindowAnimations(DIALOG_ANIM_NORMAL);
         this.context = context;
         this.dialog = dialog;
-        if (layoutStyle == DIALOG_STYLE_PROGRESS) {
+        if (layoutStyle == DIALOG_STYLE_LOADING) {
             showConfirmButton(false);
             mProgressHelper = new ProgressHelper(context);
-            mProgressHelper
-                    .setProgressWheel((ProgressWheel) getView(R.id.progressWheel));
+            mProgressHelper.setProgressWheel((ProgressWheel) getView(R.id.progressWheel));
         }
-        if (layoutStyle == DIALOG_STYLE_PROGRESS_TITANIC) {
+        if (layoutStyle == DIALOG_STYLE_LOADING_TITANIC) {
             showConfirmButton(false);
             mTitanicTXview = getView(R.id.progressTitanic);
         }
-        if (layoutStyle == DIALOG_STYLE_PROGRESS_AVLOADING) {
+        if (layoutStyle == DIALOG_STYLE_LOADING_AVLOADING) {
             showConfirmButton(false);
             mAVIndicatorView = getView(R.id.progressAVloading);
         }
@@ -398,7 +431,7 @@ public class CBDialogBuilder {
             horizatonalLine = getView(R.id.dialog_btn_line_horizontal);
         }
         // 判断是否需要创建取消按钮
-        if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS || DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS_TITANIC || DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS_AVLOADING) {
+        if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING || DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING_TITANIC || DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING_AVLOADING) {
             if (confrimBtn != null) {
                 confrimBtn.setBackgroundResource(confirmBtnBG > 0 ? confirmBtnBG : R.drawable.cb_button_background);
             }
@@ -444,12 +477,11 @@ public class CBDialogBuilder {
                 });
             }
         }
-        if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS
-                || DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS_TITANIC || DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS_AVLOADING) {
+        if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING || DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING_TITANIC || DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING_AVLOADING) {
             dialog.setCanceledOnTouchOutside(false);
             new CountDownTimer(800 * 7 * outOfTime, 800) {
                 public void onTick(long millisUntilFinished) {
-                    if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS) {
+                    if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING) {
                         count++;
                         if (progressColors != null) {
                             switch (count % 7) {
@@ -500,7 +532,7 @@ public class CBDialogBuilder {
                                     break;
                             }
                         }
-                    } else if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS_TITANIC) {
+                    } else if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING_TITANIC) {
                         if (titanic == null) {
                             titanic = new Titanic();
                             titanic.start(mTitanicTXview);
@@ -509,7 +541,7 @@ public class CBDialogBuilder {
                 }
 
                 public void onFinish() {
-                    if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS) {
+                    if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING) {
                         count = -1;
                         if (mProgressHelper.getProgressWheel() != null && progressTimeOutLimit) {
                             mProgressHelper.getProgressWheel().setVisibility(
@@ -518,7 +550,7 @@ public class CBDialogBuilder {
                         if (horizatonalLine != null && progressTimeOutLimit) {
                             horizatonalLine.setVisibility(View.VISIBLE);
                         }
-                    } else if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS_TITANIC && progressTimeOutLimit) {
+                    } else if (DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING_TITANIC && progressTimeOutLimit) {
                         titanic.cancel();
                         mTitanicTXview.setVisibility(View.GONE);
                         if (horizatonalLine != null) {
@@ -558,7 +590,7 @@ public class CBDialogBuilder {
 
     public CBDialogBuilder setProgressTitanicText(Object msg) {
         if (mTitanicTXview != null
-                && DIALOG_STYLE_CURRENT == DIALOG_STYLE_PROGRESS_TITANIC) {
+                && DIALOG_STYLE_CURRENT == DIALOG_STYLE_LOADING_TITANIC) {
             mTitanicTXview.setText(parseParam(msg));
         }
         return this;
@@ -791,6 +823,19 @@ public class CBDialogBuilder {
         ImageView customIcon = getView(R.id.custom_icon);
         if (!showTopIcon) {
             customIcon.setVisibility(View.GONE);
+        }
+        return this;
+    }
+
+    public CBDialogBuilder setItemBg(int itemBgId) {
+        if (itemBgId == ITEM_BG_BLUE) {
+            ITEM_BG_CURRENT = ITEM_BG_BLUE;
+        } else if (itemBgId == ITEM_BG_GREEN) {
+            ITEM_BG_CURRENT = ITEM_BG_GREEN;
+        } else if (itemBgId == ITEM_BG_PINK) {
+            ITEM_BG_CURRENT = ITEM_BG_PINK;
+        } else {
+            ITEM_BG_CURRENT = ITEM_BG_GREEN;
         }
         return this;
     }
@@ -1330,17 +1375,19 @@ public class CBDialogBuilder {
                     viewHolder = (ViewHolder) convertView.getTag();
                 }
 
-                viewHolder.txView.setTextColor(context.getResources().getColor(
-                        R.color.item_text_color));
 
                 if (position == selectedPos) {
-//				viewHolder.txView.setTextColor(context.getResources().getColor(
-//						R.color.item_text_color_pressed));
-                    // 暂时选中不变色
-                    viewHolder.txView
-                            .setBackgroundResource(R.drawable.item_tx_background);
+                    viewHolder.txView.setBackgroundResource(ITEM_BG_CURRENT);
+                    if (ITEM_BG_CURRENT == ITEM_BG_BLUE) {
+                        viewHolder.txView.setTextColor(context.getResources().getColor(R.color.cb_item_color_blue));
+                    } else if (ITEM_BG_CURRENT == ITEM_BG_GREEN) {
+                        viewHolder.txView.setTextColor(context.getResources().getColor(R.color.cb_item_color_green));
+                    } else if (ITEM_BG_CURRENT == ITEM_BG_PINK) {
+                        viewHolder.txView.setTextColor(context.getResources().getColor(R.color.cb_item_color_pink));
+                    }
                 } else {
                     viewHolder.txView.setBackgroundResource(R.color.color_transparent);
+                    viewHolder.txView.setTextColor(context.getResources().getColor(R.color.cb_item_color_default));
                 }
                 viewHolder.txView.setText(dataArrays[position]);
                 return convertView;

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cb_dialog_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cb_dialog_background"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <com.zhl.cbdialog.titanic.TitanicTextView
+        android:id="@+id/loading_titanic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:lines="1"
+        android:text="Loading..."
+        android:textColor="@color/blue_btn_bg_color"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:typeface="serif" />
+
+
+
+</LinearLayout>

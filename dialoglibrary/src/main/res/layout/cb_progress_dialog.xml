@@ -6,34 +6,7 @@
     android:background="@drawable/cb_dialog_background"
     android:orientation="vertical">
 
-    <!-- 自定义图标 -->
-    <ImageView
-        android:id="@+id/custom_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:visibility="gone" />
 
-    <!-- 警告图标 -->
-    <FrameLayout
-        android:id="@+id/warning_frame"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/warning_circle" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/app_name"
-            android:scaleType="center"
-            android:src="@drawable/warning_sigh" />
-    </FrameLayout>
 
     <!-- 对话框标题 和图标 -->
     <TextView

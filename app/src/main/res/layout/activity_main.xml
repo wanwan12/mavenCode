@@ -18,25 +18,25 @@
                 android:id="@+id/main_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="警告" />
+                android:text="提示" />
 
             <Button
                 android:id="@+id/main_loading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="加载中" />
+                android:text="带图片的提示" />
 
             <Button
                 android:id="@+id/main_success"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="成功" />
+                android:text="按钮监听" />
 
             <Button
                 android:id="@+id/main_fail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="失败" />
+                android:text="列表单选" />
         </LinearLayout>
 
         <LinearLayout
@@ -48,32 +48,45 @@
                 android:id="@+id/main_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="信息" />
+                android:text="加载中模式一" />
 
             <Button
                 android:id="@+id/main_customer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="自定义" />
+                android:text="输入框" />
 
             <Button
                 android:id="@+id/main_warn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="弹窗" />
+                android:text="列表单选-自定义View" />
 
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <Button
                 android:id="@+id/main_system"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="AlertSheet" />
-
+                android:text="加载中模式二" />
+            <Button
+                android:id="@+id/main_ad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="显示广告" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/main_ad"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="显示广告" />
+
     </LinearLayout>
 </LinearLayout>

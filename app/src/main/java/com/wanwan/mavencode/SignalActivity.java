@@ -4,10 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +12,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhl.cbdialog.CBDialogBuilder;
-import com.zhl.cbdialog.pedant.SweetAlert.SweetAlertDialog;
+import com.zhl.cbdialog.CZDialogBaseBuilder;
+import com.zhl.cbdialog.CZDialogHelp;
+import com.zhl.cbdialog.CZDialogInputBuilder;
+import com.zhl.cbdialog.CZDialogLoadingBuilder;
+import com.zhl.cbdialog.CZDialogProgressBuilder;
+import com.zhl.cbdialog.CZDialogSelectBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
 
-
-public class SignalActivity extends AppCompatActivity  {
+public class SignalActivity extends AppCompatActivity {
 
     private Context mContext;
-    private int curSelectedItemPos=0;
+    private int curSelectedItemPos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +64,8 @@ public class SignalActivity extends AppCompatActivity  {
                         .setTitle("设置按钮和信息文字样式")
                         .setMessage("this is a normal CBDialog")
                         .setMessageTextSize(16)
-                        .setMessageTextColor(Color.BLUE)
                         .setConfirmButtonText("确定")
-//                        .setConfirmBackgroundResouce(R.drawable.custom_button_background_right)
-                        .setConfirmButtonTextColor(Color.WHITE)
-                        .setCancelButtonText("Quit")
+                        .setCancelButtonText("取消")
                         .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
                         .create().show();
             }
@@ -77,44 +73,32 @@ public class SignalActivity extends AppCompatActivity  {
         findViewById(R.id.main_success).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CBDialogBuilder(mContext)
-                        .setTouchOutSideCancelable(true)
-                        .showCancelButton(false)
-                        .setTitle("单个按钮")
-                        .setMessage("this is a normal CBDialog")
-                        .setConfirmButtonText("确定")
-                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
-                        .create().show();
+                CZDialogHelp.creatInputDialog(mContext, "请输入姓名", "请输入姓名", true, new CZDialogBaseBuilder.OnBtnClickListen() {
+                    @Override
+                    public void onBtnClick(Dialog dialog, int whichBtn, Object result) {
+                        if (whichBtn == CZDialogBaseBuilder.OnBtnClickListen.BUTTON_CONFIRM) {
+                            Toast.makeText(mContext, "结果:" + result, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).show();
             }
         });
         findViewById(R.id.main_fail).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CBDialogBuilder(mContext)
-                        .setTouchOutSideCancelable(true)
-                        .showCancelButton(true)
-                        .setTitle("这是一个有按钮监听的对话框")
-                        .setMessage("this is a normal CBDialog with listener")
-                        .setConfirmButtonText("ok")
-                        .setCancelButtonText("cancel")
-                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
-                        .setDialoglocation(CBDialogBuilder.DIALOG_LOCATION_BOTTOM)
-                        .setButtonClickListener(true, new CBDialogBuilder.onDialogbtnClickListener() {
+                final String[] itemOptions = new String[]{"较小", "中等", "较大", "巨无霸"};
+                new CZDialogSelectBuilder(mContext, CZDialogSelectBuilder.DIALOG_TYPE_SELECT_SINGLE, true)
+                        .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                        .setItemClickListen(new CZDialogBaseBuilder.OnItemClickListen() {
                             @Override
-                            public void onDialogbtnClick(Context context, Dialog dialog, int whichBtn) {
-                                switch (whichBtn) {
-                                    case BUTTON_CONFIRM:
-                                        Toast.makeText(context, "点击了确认按钮", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case BUTTON_CANCEL:
-                                        Toast.makeText(context, "点击了取消按钮", Toast.LENGTH_SHORT).show();
-                                        break;
-                                    default:
-                                        break;
-                                }
+                            public void onItmeClick(Dialog dialog, int which, Object result) {
+                                dialog.dismiss();
                             }
                         })
-                        .create().show();
+                        .setItems(itemOptions, 0)
+                        .create()
+                        .show();
+
             }
         });
 
@@ -128,7 +112,7 @@ public class SignalActivity extends AppCompatActivity  {
                         .setTitle("选择文字大小")
                         .setConfirmButtonText("ok")
                         .setCancelButtonText("cancel")
-                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_NORMAL_Fast)
                         .setItems(itemOptions, new CBDialogBuilder.onDialogItemClickListener() {
 
                             @Override
@@ -157,7 +141,7 @@ public class SignalActivity extends AppCompatActivity  {
                                 } else {
                                     viewHolder = (ViewHolder) convertView.getTag();
                                 }
-                                viewHolder.txView.setTextColor(getResources().getColor(R.color.item_text_color));
+                                viewHolder.txView.setTextColor(getResources().getColor(R.color.cb_item_color_default));
                                 if (position == curSelectedItemPos) {
                                     viewHolder.txView.setBackgroundResource(R.drawable.custom_option_item_tx_background);
                                 } else {
@@ -174,18 +158,9 @@ public class SignalActivity extends AppCompatActivity  {
         findViewById(R.id.main_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CBDialogBuilder(mContext, CBDialogBuilder.DIALOG_STYLE_PROGRESS, 0.5f)
-                        .showCancelButton(true)
-                        .setMessage("正在加载请稍后...")
-                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
-                        .setOnProgressOutTimeListener(1, new CBDialogBuilder.onProgressOutTimeListener() {
-                            @Override
-                            public void onProgressOutTime(Dialog dialog, TextView dialogMsgTextView) {
-//                                dialogMsgTextView.setText("出错啦");
-                            }
-                        })
-                        .setProgressTimeOutLimit(false)
-//                        .setProgressStyleColorRes(new int[]{0xFF37474F,0xFF263238,0xFF21272B,0xFF80CBC4,0xFF009688,0xFFDE6262,0xFF0F519F})
+                new CZDialogLoadingBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_LOADING_AVLOAD, true)
+                        .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                        .setLoadingText("加载中。。。")
                         .create().show();
             }
         });
@@ -193,11 +168,10 @@ public class SignalActivity extends AppCompatActivity  {
         findViewById(R.id.main_system).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CBDialogBuilder(mContext, CBDialogBuilder.DIALOG_STYLE_PROGRESS_AVLOADING)
+                new CBDialogBuilder(mContext, CBDialogBuilder.DIALOG_STYLE_LOADING_AVLOADING, false)
                         .setTouchOutSideCancelable(false)
                         .showCancelButton(true)
                         .setMessage("正在加载请稍后...")
-                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
                         .setAVLoadingColor(Color.RED)
                         .setOnProgressOutTimeListener(1, new CBDialogBuilder.onProgressOutTimeListener() {
                             @Override
@@ -212,15 +186,23 @@ public class SignalActivity extends AppCompatActivity  {
         findViewById(R.id.main_customer).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CBDialogBuilder(mContext, CBDialogBuilder.DIALOG_STYLE_NORMAL)
-                        .showIcon(false)
-                        .setTouchOutSideCancelable(false)
-                        .showCancelButton(false)
-                        .setDialoglocation(CBDialogBuilder.DIALOG_LOCATION_CENTER)
-                        .setTitle("请输入姓名")
-                        .setView(R.layout.cb_custom_edit_view)
-                        .setConfirmButtonText("确定")
-                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                new CZDialogInputBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_EDIT, true)
+                        .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                        .setTitle("输入姓名")
+                        .setHint("wanwan")
+                        .showCancelButton(true)
+                        .setBtnClickListen(new CZDialogBaseBuilder.OnBtnClickListen() {
+                            @Override
+                            public void onBtnClick(Dialog dialog, int whichBtn, Object result) {
+                                if (whichBtn == CZDialogBaseBuilder.OnBtnClickListen.BUTTON_CONFIRM) {
+                                    Toast.makeText(mContext, "确定  " + result, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dialog.dismiss();
+                                }
+                            }
+                        })
+                        .setConfirmText("立即更新")
+                        .setCancelText("取消更新")
                         .create().show();
             }
         });
@@ -229,20 +211,14 @@ public class SignalActivity extends AppCompatActivity  {
         findViewById(R.id.main_ad).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CBDialogBuilder(mContext, CBDialogBuilder.DIALOG_STYLE_NORMAL)
-                        .showIcon(false)
-                        .setTouchOutSideCancelable(false)
-                        .showCancelButton(false)
-                        .setDialoglocation(CBDialogBuilder.DIALOG_LOCATION_CENTER)
-                        .setTitle("请输入姓名")
-                        .setView(R.layout.cb_custom_progressbar_view)
-                        .setConfirmButtonText("确定")
-                        .setDialogAnimation(CBDialogBuilder.DIALOG_ANIM_SLID_BOTTOM)
+                new CZDialogProgressBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_PROGRESS, true)
+                        .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                        .setTitle("进度条")
+                        .setCurProgress(30)
                         .create().show();
             }
         });
     }
-
 
 
     @Override
