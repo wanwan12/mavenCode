@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.wanwan.mavencode"
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -20,7 +20,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.1'
-//    compile 'com.lebaos.maven:dialoglibrary:1.0.8'
-    compile project(':dialoglibrary')
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.lebaos.maven:dialoglibrary:1.1.4'
+//    compile project(':dialoglibrary')
+    compile project(':xkbanner')
 }

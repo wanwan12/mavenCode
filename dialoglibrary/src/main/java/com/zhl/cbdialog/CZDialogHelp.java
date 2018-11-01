@@ -14,6 +14,13 @@ public class CZDialogHelp {
                 .create();
     }
 
+    public static Dialog creatLoadingDialog(Context mContext, String loadStr) {
+        return new CZDialogLoadingBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_LOADING_AVLOAD, true)
+                .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                .setLoadingText(loadStr)
+                .create();
+    }
+
     public static Dialog creatTipsDialog(Context mContext, String contentStr, boolean showCancel, final CZDialogBaseBuilder.OnBtnClickListen listen) {
         return new CZDialogTipsBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_TIPS, true)
                 .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
@@ -58,15 +65,73 @@ public class CZDialogHelp {
                 .create();
     }
 
-    public static Dialog creatInputDialog(Context mContext, String titleStr, String hintStr, boolean showCancel, CZDialogBaseBuilder.OnBtnClickListen listen) {
+    public static Dialog creatSelSingleDialog(Context mContext, String titleStr, String[] items, int cueSelPos, CZDialogBaseBuilder.OnItemClickListen listen) {
+        return new CZDialogSelectBuilder(mContext, CZDialogSelectBuilder.DIALOG_TYPE_SELECT_SINGLE, true)
+                .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                .setTitle(titleStr)
+                .setItemClickListen(listen)
+                .setItems(items, cueSelPos)
+                .create();
+    }
+
+    public static Dialog creatInputDialog(Context mContext, String titleStr, String hintStr, String contentStr, int inputType,int charLength,CZDialogBaseBuilder.OnBtnClickListen listen) {
         return new CZDialogInputBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_EDIT, true)
                 .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
                 .setTitle(titleStr)
                 .setHint(hintStr)
+                .setText(contentStr)
+                .setInputType(inputType)
+                .setCharLength(charLength)
+                .setBtnClickListen(listen)
+                .setConfirmText("确定")
+                .setCancelText("取消")
+                .create();
+    }
+
+    public static Dialog creatInputDialog(Context mContext, String titleStr, String hintStr, String contentStr, CZDialogBaseBuilder.OnBtnClickListen listen) {
+        return new CZDialogInputBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_EDIT, true)
+                .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                .setTitle(titleStr)
+                .setHint(hintStr)
+                .setText(contentStr)
+                .setInputType(CZDialogBaseBuilder.INPUT_TYPE_TEXT)
+                .setCharLength(10)
+                .setBtnClickListen(listen)
+                .setConfirmText("确定")
+                .setCancelText("取消")
+                .create();
+    }
+    public static Dialog creatInputDialog(Context mContext, String titleStr, String hintStr, String contentStr, boolean showCancel, CZDialogBaseBuilder.OnBtnClickListen listen) {
+        return new CZDialogInputBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_EDIT, true)
+                .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                .setTitle(titleStr)
+                .setHint(hintStr)
+                .setText(contentStr)
                 .showCancelButton(showCancel)
                 .setBtnClickListen(listen)
                 .setConfirmText("确定")
                 .setCancelText("取消")
+                .create();
+    }
+
+    public static Dialog creatProgressDialog(Context mContext, String titleStr, CZDialogProgressBuilder.OnStartListen listen) {
+        return new CZDialogProgressBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_PROGRESS, true)
+                .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                .setTitle(titleStr)
+                .setCurProgress(0)
+                .setStartListen(listen)
+                .start()
+                .create();
+    }
+
+    public static Dialog creatProgressDialog(Context mContext, String titleStr, int max, CZDialogProgressBuilder.OnStartListen listen) {
+        return new CZDialogProgressBuilder(mContext, CZDialogBaseBuilder.DIALOG_TYPE_PROGRESS, true)
+                .setDialogTheme(CZDialogBaseBuilder.DIALOG_THEME_PINK)
+                .setTitle(titleStr)
+                .setCurProgress(0)
+                .setMaxProgress(max)
+                .setStartListen(listen)
+                .start()
                 .create();
     }
 

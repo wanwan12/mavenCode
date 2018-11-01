@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.zhl.cbdialog.view.CBHorizontalProgressBar;
+
 
 /**
  * 类名称：对话框工具类 类描述：创建对话框的工具类，可以设置不同样式，和动画风格
@@ -29,6 +31,9 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     private int maxCount = 100;
 
 
+    private OnStartListen mListen;
+
+
     /**
      * 构造器一 创建一个基本dialog
      *
@@ -41,7 +46,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置系统级弹窗
      */
-    public CZDialogBaseBuilder setSystemAlert(boolean isSystemAlert) {
+    public CZDialogProgressBuilder setSystemAlert(boolean isSystemAlert) {
         super.setSystemAlert(isSystemAlert);
         return this;
     }
@@ -50,7 +55,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置对话框宽度
      */
-    public CZDialogBaseBuilder setDialogAnim(int dialogAnim) {
+    public CZDialogProgressBuilder setDialogAnim(int dialogAnim) {
         super.setDialogAnim(dialogAnim);
         return this;
     }
@@ -58,7 +63,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置对话框宽度
      */
-    public CZDialogBaseBuilder setDialogWidth(float dialogWidth) {
+    public CZDialogProgressBuilder setDialogWidth(float dialogWidth) {
         super.setDialogWidth(dialogWidth);
         return this;
     }
@@ -66,7 +71,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置对话框透明度
      */
-    public CZDialogBaseBuilder setDialogAlpha(float dialogAlpha) {
+    public CZDialogProgressBuilder setDialogAlpha(float dialogAlpha) {
         super.setDialogAlpha(dialogAlpha);
         return this;
     }
@@ -74,7 +79,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置对话框位置
      */
-    public CZDialogBaseBuilder setDialogLocation(int dialogLocation) {
+    public CZDialogProgressBuilder setDialogLocation(int dialogLocation) {
         super.setDialogLocation(dialogLocation);
         return this;
     }
@@ -83,7 +88,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置对话框是否显示取消键
      */
-    public CZDialogBaseBuilder showCancelButton(boolean showCancelButton) {
+    public CZDialogProgressBuilder showCancelButton(boolean showCancelButton) {
         super.showCancelButton(showCancelButton);
         return this;
     }
@@ -91,7 +96,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置对话框是否显示确定键
      */
-    public CZDialogBaseBuilder showConfirmButton(boolean showConfirmbtn) {
+    public CZDialogProgressBuilder showConfirmButton(boolean showConfirmbtn) {
         super.showConfirmButton(showConfirmbtn);
         return this;
     }
@@ -99,7 +104,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置点击对话框外面，对话框是否取消
      */
-    public CZDialogBaseBuilder touchOutSideCancel(boolean touchOutSideCancel) {
+    public CZDialogProgressBuilder touchOutSideCancel(boolean touchOutSideCancel) {
         super.touchOutSideCancel(touchOutSideCancel);
         return this;
     }
@@ -107,7 +112,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置点击对话框外面，对话框是否取消
      */
-    public CZDialogBaseBuilder cancelEnable(boolean cancelEnable) {
+    public CZDialogProgressBuilder cancelEnable(boolean cancelEnable) {
         super.cancelEnable(cancelEnable);
         return this;
     }
@@ -115,7 +120,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置点击监听
      */
-    public CZDialogBaseBuilder setBtnClickListen(OnBtnClickListen btnClickListen) {
+    public CZDialogProgressBuilder setBtnClickListen(OnBtnClickListen btnClickListen) {
         super.setBtnClickListen(btnClickListen);
         return this;
     }
@@ -123,7 +128,7 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置确定按键文本
      */
-    public CZDialogBaseBuilder setConfirmText(String confirmStr) {
+    public CZDialogProgressBuilder setConfirmText(String confirmStr) {
         super.setConfirmText(confirmStr);
         return this;
     }
@@ -131,20 +136,33 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
     /**
      * 设置取消按键文本
      */
-    public CZDialogBaseBuilder setCancelText(String cancelStr) {
+    public CZDialogProgressBuilder setCancelText(String cancelStr) {
         super.setCancelText(cancelStr);
         return this;
     }
 
 
-    public CZDialogBaseBuilder setMaxProgress(int maxProgress) {
+    public CZDialogProgressBuilder setMaxProgress(int maxProgress) {
         maxCount = maxProgress;
         return this;
     }
 
-    public CZDialogBaseBuilder setCurProgress(int curProgress) {
+    public CZDialogProgressBuilder setCurProgress(int curProgress) {
         if (mViewHolder.cbhProgress != null) {
             mViewHolder.cbhProgress.setProgress(curProgress * 100 / maxCount);
+        }
+        return this;
+    }
+
+
+    public CZDialogProgressBuilder setStartListen(OnStartListen listen) {
+        this.mListen = listen;
+        return this;
+    }
+
+    public CZDialogProgressBuilder start(){
+        if(mListen!=null&&mViewHolder.cbhProgress!=null){
+            mListen.onStart(mViewHolder.cbhProgress);
         }
         return this;
     }
@@ -235,6 +253,10 @@ public class CZDialogProgressBuilder extends CZDialogBaseBuilder {
         } else {
             dialog.dismiss();
         }
+    }
+
+    public interface OnStartListen{
+        void onStart(CBHorizontalProgressBar progressBar);
     }
 
 

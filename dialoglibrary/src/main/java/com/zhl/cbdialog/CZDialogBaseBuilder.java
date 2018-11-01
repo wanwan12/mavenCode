@@ -114,6 +114,20 @@ public class CZDialogBaseBuilder implements OnClickListener {
 
 
     /**
+     * 输入框类型
+     */
+    public static final int INPUT_TYPE_NUMBER = 1;
+    /**
+     * 输入框类型
+     */
+    public static final int INPUT_TYPE_TEXT = 2;
+    /**
+     * 输入框类型
+     */
+    public static final int INPUT_TYPE_PHONE = 3;
+
+
+    /**
      * 当前对话框类型
      */
     public int curDialogType = DIALOG_TYPE_TIPS;
@@ -373,11 +387,11 @@ public class CZDialogBaseBuilder implements OnClickListener {
         }
     }
 
-    public void onComfireClick(){
+    public void onComfireClick() {
 
     }
 
-    public void onCancelClick(){
+    public void onCancelClick() {
 
     }
 
@@ -506,7 +520,7 @@ public class CZDialogBaseBuilder implements OnClickListener {
          * @param dialog   点击的哪个对话框
          * @param whichBtn 点击的哪个按钮
          */
-        void onBtnClick(Dialog dialog, int whichBtn , Object result);
+        void onBtnClick(Dialog dialog, int whichBtn, Object result);
 
     }
 
@@ -517,10 +531,10 @@ public class CZDialogBaseBuilder implements OnClickListener {
      */
     public interface OnItemClickListen {
         /**
-         * @param dialog   点击的哪个对话框
-         * @param which 点击的哪个按钮
+         * @param dialog 点击的哪个对话框
+         * @param which  点击的哪个按钮
          */
-        void onItmeClick(Dialog dialog, int which , Object result);
+        void onItmeClick(Dialog dialog, int which, Object result);
 
     }
 

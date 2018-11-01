@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,9 +10,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!--<EditText-->
+            <!--android:id="@+id/et_data"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:layout_marginRight="16dp"/>-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <Button
@@ -42,6 +51,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <Button
@@ -64,16 +74,12 @@
 
 
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#333333"
-                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="horizontal">
             <Button
                 android:id="@+id/main_system"
@@ -89,4 +95,41 @@
 
 
     </LinearLayout>
+
+
+    <com.wanwan.mavencode.widget.CustomProgressBar
+        android:id="@+id/cpb_progresbar2"
+        android:layout_marginTop="@dimen/px50"
+        android:layout_width="@dimen/px300"
+        android:layout_height="@dimen/px40"
+        app:progressHeight="@dimen/px20"
+        app:maxProgress="100"
+        app:bgColor="#909090"
+        app:progress="5"
+        app:borderWidth="@dimen/px2"
+        app:progressRadius="@dimen/px10"
+        app:showCircularPoint="true"
+        app:circularPointRadius="@dimen/px18"
+        app:circularPointColor= "#00FF00"
+        app:isShowDesc="false"/>
+
+    <com.wanwan.mavencode.widget.FlikerProgressBar
+        android:id="@+id/id_flikerProgressBar"
+        android:layout_width="@dimen/px300"
+        android:layout_height="@dimen/px80"
+        android:layout_marginTop="@dimen/px80"
+        app:textSize="12sp"
+        app:loadingColor="#40c4ff"
+        app:stopColor="#ff9800"
+        app:radius="20dp"/>
+
+    <Button
+        android:id="@+id/btn_checkDVR"
+        android:layout_width="@dimen/px300"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/px22"
+        android:textColor="#C21062"
+        android:textSize="@dimen/px32"
+        android:text="检查DVR是否使用静态广播"/>
+
 </LinearLayout>

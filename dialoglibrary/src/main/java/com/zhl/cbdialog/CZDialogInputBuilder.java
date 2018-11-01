@@ -2,6 +2,8 @@ package com.zhl.cbdialog;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
 
@@ -184,6 +186,48 @@ public class CZDialogInputBuilder extends CZDialogBaseBuilder {
     public CZDialogInputBuilder setHint(String content) {
         if (mViewHolder.etContent != null) {
             mViewHolder.etContent.setHint(content);
+        }
+        return this;
+    }
+
+    /**
+     * 设置对话框
+     *
+     * @param content
+     * @return
+     */
+    public CZDialogInputBuilder setText(String content) {
+        if (mViewHolder.etContent != null) {
+            mViewHolder.etContent.setText(content);
+        }
+        return this;
+    }
+
+    /**
+     * 设置对话框
+
+     * @return
+     */
+    public CZDialogInputBuilder setInputType(int inputType) {
+
+        if (mViewHolder.etContent != null) {
+            if(inputType == INPUT_TYPE_NUMBER){
+                mViewHolder.etContent.setInputType(InputType.TYPE_CLASS_NUMBER);
+            }else if(inputType == INPUT_TYPE_TEXT){
+                mViewHolder.etContent.setInputType(InputType.TYPE_CLASS_TEXT);
+            }else if(inputType == INPUT_TYPE_PHONE){
+                mViewHolder.etContent.setInputType(InputType.TYPE_CLASS_PHONE);
+            }
+        }
+        return this;
+    }/**
+     * 设置对话框
+
+     * @return
+     */
+    public CZDialogInputBuilder setCharLength(int charLength) {
+        if (mViewHolder.etContent != null) {
+            mViewHolder.etContent.setFilters(new InputFilter[]{new InputFilter.LengthFilter(charLength)});
         }
         return this;
     }

@@ -1,16 +1,27 @@
 package com.wanwan.mavencode;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wanwan.mavencode.widget.CustomProgressBar;
+import com.wanwan.mavencode.widget.FlikerProgressBar;
 import com.zhl.cbdialog.CBDialogBuilder;
 import com.zhl.cbdialog.CZDialogBaseBuilder;
 import com.zhl.cbdialog.CZDialogHelp;
@@ -19,11 +30,18 @@ import com.zhl.cbdialog.CZDialogLoadingBuilder;
 import com.zhl.cbdialog.CZDialogProgressBuilder;
 import com.zhl.cbdialog.CZDialogSelectBuilder;
 
+import java.util.List;
+
 
 public class SignalActivity extends AppCompatActivity {
 
+    private static final String TAG = SignalActivity.class.getSimpleName();
     private Context mContext;
     private int curSelectedItemPos = 0;
+
+    private EditText etData;
+    private FlikerProgressBar flikerProgressBar;
+    private CustomProgressBar customProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +49,12 @@ public class SignalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mContext = this;
         initView();
-
+//        etData = (EditText) findViewById(R.id.et_data);
+//        etData.requestFocusFromTouch();
+        MyBroadcastReceiver myBroadcastReceiver = new MyBroadcastReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("ecarx.intent.action.voice.boot.completed");
+        registerReceiver(myBroadcastReceiver, filter);
     }
 
 
@@ -73,7 +96,7 @@ public class SignalActivity extends AppCompatActivity {
         findViewById(R.id.main_success).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CZDialogHelp.creatInputDialog(mContext, "请输入姓名", "请输入姓名", true, new CZDialogBaseBuilder.OnBtnClickListen() {
+                CZDialogHelp.creatInputDialog(mContext, "请输入姓名", "请输入姓名", "", new CZDialogBaseBuilder.OnBtnClickListen() {
                     @Override
                     public void onBtnClick(Dialog dialog, int whichBtn, Object result) {
                         if (whichBtn == CZDialogBaseBuilder.OnBtnClickListen.BUTTON_CONFIRM) {
@@ -218,12 +241,105 @@ public class SignalActivity extends AppCompatActivity {
                         .create().show();
             }
         });
+        findViewById(R.id.btn_checkDVR).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean state = hasRegisterExit("ecarx.intent.broadcast.category.ECARX_VR_APP_CLOSE_DVR", 1);
+                Intent intent = new Intent("/");
+                ComponentName cm = new ComponentName("com.neusoft.optimus.wheeljack.setting", "com.neusoft.optimus.wheeljack.setting.WirelessSettings");
+                intent.setComponent(cm);
+                intent.setAction("android.intent.action.VIEW");
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        flikerProgressBar = (FlikerProgressBar) findViewById(R.id.id_flikerProgressBar);
+        flikerProgressBar.setProgress(50);
+        customProgressBar = (CustomProgressBar) findViewById(R.id.cpb_progresbar2);
+        customProgressBar.setCurProgress(50);
     }
 
+    private boolean hasRegisterExit(String category, int closeType) {
+        Intent intent = new Intent();
+        intent.setAction("ecarx.intent.broadcast.action.ECARX_VR_APP_CLOSE");
+        intent.addCategory(category);
+        intent.putExtra("close_type", closeType);
+
+        Log.w(TAG, "hasRegister start:" + System.currentTimeMillis());
+        PackageManager pm = mContext.getApplicationContext().getPackageManager();
+        List<ResolveInfo> resolveInfos = pm.queryBroadcastReceivers(intent, 0);
+        Log.w(TAG, "hasRegister stop :" + System.currentTimeMillis());
+        if (resolveInfos != null && !resolveInfos.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        mInstance = null;
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        analysisKeyEvent(event);
+        return true;
+
+    }
+
+    /**
+     * 扫码设备事件解析
+     *
+     * @param event
+     */
+    public void analysisKeyEvent(KeyEvent event) {
+        Log.e("LBSSignActivity", event.getKeyCode() + "     " + event.toString());
+        int keyCode = event.getKeyCode();
+
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_0:
+                    inputStr.append("0");
+                    break;
+                case KeyEvent.KEYCODE_1:
+                    inputStr.append("1");
+                    break;
+                case KeyEvent.KEYCODE_2:
+                    inputStr.append("2");
+                    break;
+                case KeyEvent.KEYCODE_3:
+                    inputStr.append("3");
+                    break;
+                case KeyEvent.KEYCODE_4:
+                    inputStr.append("4");
+                    break;
+                case KeyEvent.KEYCODE_5:
+                    inputStr.append("5");
+                    break;
+                case KeyEvent.KEYCODE_6:
+                    inputStr.append("6");
+                    break;
+                case KeyEvent.KEYCODE_7:
+                    inputStr.append("7");
+                    break;
+                case KeyEvent.KEYCODE_8:
+                    inputStr.append("8");
+                    break;
+                case KeyEvent.KEYCODE_9:
+                    inputStr.append("9");
+                    break;
+                case KeyEvent.KEYCODE_ENTER:
+                    Toast.makeText(mContext, inputStr.toString(), Toast.LENGTH_SHORT).show();
+                    inputStr = new StringBuilder();
+                    break;
+            }
+        }
+
+    }
+
+    private StringBuilder inputStr = new StringBuilder();
+
+    private class MyBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(mContext, intent.getAction(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

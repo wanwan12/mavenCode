@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="XKBanner">
+        <attr name="xkbannerTurnTime" format="integer" />
+        <attr name="xkbannerTurnDuration" format="integer" />
+        <attr name="xkbannerTurnAuto" format="boolean" />
+        <attr name="xkbannerTurnLoop" format="boolean" />
+        <attr name="xkbannerScrollEnable" format="boolean" />
+        <attr name="xkbannerIndicatorOn" format="reference" />
+        <attr name="xkbannerIndicatorOff" format="reference" />
+        <attr name="xkbannerTransformer">
+            <enum name="ABase" value="0" />
+            <enum name="Accordion" value="1" />
+            <enum name="BackgroundToForeground" value="2" />
+            <enum name="CubeIn" value="3" />
+            <enum name="CubeOut" value="4" />
+            <enum name="Default" value="5" />
+            <enum name="DepthPage" value="6" />
+            <enum name="FlipHorizontal" value="7" />
+            <enum name="ForegroundToBackground" value="8" />
+            <enum name="RotateDown" value="9" />
+            <enum name="RotateUp" value="10" />
+            <enum name="Stack" value="11" />
+            <enum name="ScaleInOut" value="12" />
+            <enum name="Tablet" value="13" />
+            <enum name="ZoomIn" value="14" />
+            <enum name="ZoomOutSlide" value="15" />
+            <enum name="ZoomOut" value="16" />
+            <enum name="FlipVertical" value="17" />
+        </attr>
+    </declare-styleable>
+</resources>
