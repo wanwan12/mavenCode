@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btn_prompt_ful"
+        android:layout_width="@dimen/px300"
+        android:layout_height="@dimen/px120"
+        android:text="油量提醒"
+        android:visibility="gone"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/px36" />
+
+    <Button
+        android:id="@+id/btn_prompt_navi"
+        android:layout_width="@dimen/px300"
+        android:layout_height="@dimen/px120"
+        android:layout_marginTop="@dimen/px60"
+        android:text="位置推送"
+        android:visibility="gone"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/px36" />
+
+    <Button
+        android:id="@+id/btn_prompt_tts"
+        android:layout_width="@dimen/px300"
+        android:layout_height="@dimen/px120"
+        android:layout_marginTop="@dimen/px60"
+        android:text="TTS提醒"
+        android:visibility="gone"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/px36" />
+
+    <Button
+        android:id="@+id/test_miccallback"
+        android:layout_width="@dimen/px300"
+        android:layout_height="@dimen/px120"
+        android:layout_marginTop="@dimen/px60"
+        android:text="加载so文件"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/px36" />
+</LinearLayout>

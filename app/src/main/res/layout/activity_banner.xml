@@ -4,6 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <com.ecarx.xkrefresh.PullLeftToRefreshLayout
+        android:id="@+id/plrl"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:visibility="gone"
+        app:footerBgColor="@color/cb_item_color_blue">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.ecarx.xkrefresh.PullLeftToRefreshLayout>
     <com.ecarx.xkbanner.view.XKBanner
         android:id="@+id/banner"
         android:layout_width="300dp"

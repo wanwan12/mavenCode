@@ -3,6 +3,7 @@ package com.ecarx.xkbanner.adapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -77,7 +78,8 @@ public class BannerPageAdapter<T> extends PagerAdapter {
         Holder holder;
         if (view == null) {
             holder = (Holder) holderCreator.createHolder();
-            view = holder.createView(container.getContext());
+            view = LayoutInflater.from(container.getContext()).inflate(holderCreator.getLayoutId(), container, false);
+            holder.initView(view);
             view.setTag(this);
         } else {
             holder = (Holder) view.getTag();

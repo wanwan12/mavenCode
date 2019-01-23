@@ -5,10 +5,11 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.wanwan.mavencode"
-        minSdkVersion 15
+        minSdkVersion 24
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        ndk { abiFilters "armeabi" }
     }
     buildTypes {
         release {
@@ -19,9 +20,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.lebaos.maven:dialoglibrary:1.1.4'
-//    compile project(':dialoglibrary')
+    compile 'com.ecarx.xkrefresh:xkrefresh:1.0.1'
+    //    compile 'com.ecarx.xkbanner:xkbanner:1.0.1'
     compile project(':xkbanner')
+    implementation files('libs/ecarx.vr.impl.tmp.jar')
 }

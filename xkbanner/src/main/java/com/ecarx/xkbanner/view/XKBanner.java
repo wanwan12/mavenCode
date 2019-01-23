@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.ecarx.xkbanner.R;
-import com.ecarx.xkbanner.adapter.BannerPageAdapter;
 import com.ecarx.xkbanner.holder.HolderCreator;
 import com.ecarx.xkbanner.listener.CustomPageChangeListener;
 import com.ecarx.xkbanner.listener.OnItemClickListener;
@@ -95,8 +94,8 @@ public class XKBanner<T> extends LinearLayout {
             turnLoop = typedArray.getBoolean(R.styleable.XKBanner_xkbannerTurnLoop, true);
             scrollEnable = typedArray.getBoolean(R.styleable.XKBanner_xkbannerScrollEnable, true);
             turnTime = typedArray.getInteger(R.styleable.XKBanner_xkbannerTurnTime, 6000);
-            pointImgIds[0] = typedArray.getResourceId(R.styleable.XKBanner_xkbannerIndicatorOn, R.drawable.xkbanner_shape_indicator_selected);
-            pointImgIds[1] = typedArray.getResourceId(R.styleable.XKBanner_xkbannerIndicatorOff, R.drawable.xkbanner_shape_indicator_unselect);
+            pointImgIds[0] = typedArray.getResourceId(R.styleable.XKBanner_xkbannerIndicatorOn, 0);
+            pointImgIds[1] = typedArray.getResourceId(R.styleable.XKBanner_xkbannerIndicatorOff, 0);
             transformerType = typedArray.getInt(R.styleable.XKBanner_xkbannerTransformer, TF_DEFAULT);
             typedArray.recycle();
         }
@@ -106,14 +105,14 @@ public class XKBanner<T> extends LinearLayout {
         pointerContainer = (ViewGroup) view.findViewById(R.id.banner_point_container);
 
         // 初始化ViewPager的滑动速度
-        try {
-            Field mScroller = ViewPager.class.getDeclaredField("mScroller");
-            mScroller.setAccessible(true);
-            scroller = new ViewPagerScroller(getContext());
-            mScroller.set(bannerViewPager, scroller);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Field mScroller = ViewPager.class.getDeclaredField("mScroller");
+//            mScroller.setAccessible(true);
+//            scroller = new ViewPagerScroller(getContext());
+//            mScroller.set(bannerViewPager, scroller);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -183,7 +182,8 @@ public class XKBanner<T> extends LinearLayout {
                 break;
         }
         bannerViewPager.setPageTransformer(false, transformer);
-        if(turnAuto){
+        refreshPageIndicator();
+        if (turnAuto) {
             startTurn();
         }
         return this;
@@ -202,7 +202,7 @@ public class XKBanner<T> extends LinearLayout {
     };
 
     public void updataViewPager() {
-        if (bannerViewPager != null  && turnAuto) {
+        if (bannerViewPager != null && turnAuto) {
             int page = bannerViewPager.getCurrentItem() + 1;
             bannerViewPager.setCurrentItem(page);
             if (turnAuto) {
@@ -286,9 +286,9 @@ public class XKBanner<T> extends LinearLayout {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         int action = ev.getAction();
-        if (action == MotionEvent.ACTION_UP ||
-                action == MotionEvent.ACTION_CANCEL ||
-                action == MotionEvent.ACTION_OUTSIDE) {
+        if (action == MotionEvent.ACTION_UP
+                || action == MotionEvent.ACTION_CANCEL
+                || action == MotionEvent.ACTION_OUTSIDE) {
             // 开始翻页
             if (isTurning) {
                 startTurn();
@@ -331,8 +331,7 @@ public class XKBanner<T> extends LinearLayout {
     public XKBanner refreshPageIndicator() {
         pointerContainer.removeAllViews();
         pointViews.clear();
-
-        if (null == data) {
+        if (null == data || pointImgIds[0] == 0) {
             return this;
         }
         for (int count = 0; count < data.size(); count++) {

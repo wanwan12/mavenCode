@@ -4,4 +4,6 @@ public interface HolderCreator<Holder> {
 
     Holder createHolder();
 
+    int getLayoutId();
+
 }

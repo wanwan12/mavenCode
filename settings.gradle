@@ -1,1 +1,1 @@
-include ':app',':dialoglibrary', ':xkbanner'
+include ':app',':dialoglibrary', ':xkbanner', ':xkrefresh'
